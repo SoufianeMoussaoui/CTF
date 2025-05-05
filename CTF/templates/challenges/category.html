@@ -184,8 +184,9 @@
             <span>Solved</span>
           </div>
           {% endif %}
-          <a href="javascript:void(0);" class="challenge-link" data-id="{{ challenge.id }}"></a>
+          <a href="{% url 'challenge_details' category=category.name challenge_title=challenge.title %}" class="challenge-link" data-id="{{ challenge.id }}"></a>
         </div>
+        
         {% empty %}
         <div class="no-challenges">
           <div class="no-challenges-icon">
@@ -200,64 +201,10 @@
         </div>
         {% endfor %}
       </div>
+      
     </div>
   </section>
 
-  <!-- Challenge Detail Modal -->
-  <div id="challenge-modal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 id="modal-title">Challenge Title</h2>
-        <button class="modal-close">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="challenge-detail-header">
-          <div class="challenge-detail-meta">
-            <div class="challenge-detail-difficulty">
-              <span class="label">Difficulty:</span>
-              <span id="modal-difficulty" class="value">Medium</span>
-            </div>
-            <div class="challenge-detail-points">
-              <span class="label">Points:</span>
-              <span id="modal-points" class="value">250</span>
-            </div>
-            <div class="challenge-detail-solves">
-              <span class="label">Solves:</span>
-              <span id="modal-solves" class="value">42</span>
-            </div>
-          </div>
-        </div>
-        
-        <div class="challenge-detail-description">
-          <h3>Description</h3>
-          <p id="modal-description">Challenge description goes here...</p>
-        </div>
-        
-        <div class="challenge-detail-files">
-          <h3>Files</h3>
-          <div id="modal-files" class="files-list">
-            <!-- Files will be added dynamically -->
-          </div>
-        </div>
-        
-        <div class="challenge-detail-hints">
-          <h3>Hints</h3>
-          <div id="modal-hints" class="hints-list">
-            <!-- Hints will be added dynamically -->
-          </div>
-        </div>
-        
-        <div class="challenge-detail-submission">
-          <h3>Submit Flag</h3>
-          <form method="post" id="flag-form" class="flag-form">
-            {% csrf_token %}
-            <input type="text" id="flag-input" placeholder="Enter flag (e.g., RS{flag_here})" required>
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- Footer -->
   <footer class="footer">

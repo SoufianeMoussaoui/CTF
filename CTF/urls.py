@@ -12,8 +12,8 @@ urlpatterns = [
     path('dashboard/', views.dashboardPage, name='dashboard'),
     path('logout/', views.logoutUser, name='logout'),
     
-    path('<slug:slug>/', views.category_detail, name='category'),
-    path('api/challenge/<int:challenge_id>/', views.challenge_detail, name='challenge_detail'),
+    path('challenges/<slug:slug>/', views.category_detail, name='category'),
+    path('<str:category_name>/<str:challenge_title>/', views.challenge_details, name='challenge_details'),
     path('api/submit/<int:challenge_id>/', views.submit_flag, name='submit_flag'),
     path('api/hint/unlock/<int:hint_id>/', views.unlock_hint, name='unlock_hint'),
 ]

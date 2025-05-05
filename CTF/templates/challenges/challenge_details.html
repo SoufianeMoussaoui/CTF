@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ challenge.title }} - {{ category.name }} - CTF Platform{% endblock %}
+
+{% block content %}
+<div class="challenge-detail-container">
+  <div class="challenge-detail-header">
+    <div class="challenge-detail-title">
+      <h1>{{ challenge.title }}</h1>
+      <div class="challenge-detail-meta">
+        <div class="challenge-detail-difficulty">
+          <span class="label">Difficulty:</span>
+          <span class="value {{ challenge.difficulty }}">{{ challenge.difficulty|title }}</span>
+        </div>
+        <div class="challenge-detail-points">
+          <span class="label">Points:</span>
+          <span class="value">{{ challenge.points }}</span>
+        </div>
+        <div class="challenge-detail-solves">
+          <span class="label">Solves:</span>
+          <span class="value">{{ total_solves }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="challenge-detail-category">
+      <a href="{% url 'category' category.slug %}" class="category-badge {{ category.slug }}">
+        {{ category.name }}
+      </a>
+    </div>
+  </div>
+  
+  <div class="challenge-detail-content">
+    <div class="challenge-detail-description">
+      <h2>Description</h2>
+      <p>{{ challenge.description }}</p>
+    </div>
+    
+    {% if files %}
+    <div class="challenge-detail-files">
+      <h2>Files</h2>
+      <div class="files-list">
+        {% for file in files %}
+        <div class="file-item">
+          <div class="file-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+          </div>
+          <div class="file-name">{{ file.name }}</div>
+          <div class="file-size">{{ file.size|filesizeformat }}</div>
+          <a href="{{ file.file.url }}" class="file-download" download>Download</a>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+    
+    {% if unlocked_hints or locked_hints %}
+    <div class="challenge-detail-hints">
+      <h2>Hints</h2>
+      <div class="hints-list">
+        {% for hint in unlocked_hints %}
+        <div class="hint-item">
+          <div class="hint-header">
+            <div class="hint-title">Hint {{ forloop.counter }}</div>
+            <div class="hint-status unlocked">Unlocked</div>
+          </div>
+          <div class="hint-content active">
+            <p class="hint-text">{{ hint.content }}</p>
+          </div>
+        </div>
+        {% endfor %}
+        
+        {% for hint in locked_hints %}
+        <div class="hint-item">
+          <div class="hint-header">
+            <div class="hint-title">Hint {{ unlocked_hints|length|add:forloop.counter }}</div>
+            <div class="hint-cost">{{ hint.cost }} points</div>
+          </div>
+          <div class="hint-unlock">
+            <form method="post" action="{% url 'unlock_hint' hint.id %}" class="hint-unlock-form">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-outline">Unlock Hint ({{ hint.cost }} pts)</button>
+            </form>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+    
+    <div class="challenge-detail-submission">
+      <h2>Submit Flag</h2>
+      {% if solved %}
+      <div class="solved-message">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+        <span>You've already solved this challenge!</span>
+      </div>
+      {% else %}
+      <form method="post" action="{% url 'submit_flag' challenge.id %}" class="flag-form">
+        {% csrf_token %}
+        <input type="text" name="flag" placeholder="Enter flag (e.g., CTF{flag_here})" required>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      {% endif %}
+    </div>
+    
+    <div class="challenge-detail-solvers">
+      <h2>Solvers ({{ total_solves }})</h2>
+      {% if solvers %}
+      <div class="solvers-list">
+        {% for user in solvers %}
+        <div class="solver-item">
+          <div class="solver-name">{{ user.username }}</div>
+          <div class="solver-time">{{ user.solved_at|date:"F j, Y, g:i a" }}</div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p>No one has solved this challenge yet. Be the first!</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Hint toggle functionality
+    document.addEventListener('click', function(e) {
+      const hintHeader = e.target.closest('.hint-header');
+      if (hintHeader) {
+        const hintItem = hintHeader.closest('.hint-item');
+        if (hintItem) {
+          const hintContent = hintItem.querySelector('.hint-content');
+          if (hintContent) {
+            hintContent.classList.toggle('active');
+          }
+        }
+      }
+    });
+  });
+</script>
+{% endblock %}

@@ -40,7 +40,7 @@ class Challenge(models.Model):
 
     @property
     def solve_set():
-        return 0
+        pass
     
 
 
