@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Filter functionality
     const difficultyFilter = document.getElementById('difficulty');
     const statusFilter = document.getElementById('status');
-    const categoryFilter = document.getElementById('category');
+    const categoryFilter = document.getElementById('sort');
     const searchInput = document.getElementById('search');
     const challengeCards = document.querySelectorAll('.challenge-card');
     

@@ -42,25 +42,25 @@
   </nav>
 
   <!-- Category Header -->
-  <section class="category-header {{ category.name }}">
+  <section class="category-header {{ category.slug }}">
     <div class="container">
       <div class="category-header-content">
         <div class="category-icon">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            {% if category.name == 'web-exploits' %}
+            {% if category.slug == 'web' %}
               <!-- Web Icon -->
               <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"></path>
               <path d="M2 12h20"></path>
               <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-            {% elif category.name == 'Cryptography' %}
+            {% elif category.slug == 'cryptography' %}
               <!-- Crypto Icon -->
               <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
               <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
               <line x1="12" y1="15" x2="12" y2="17"></line>
-            {% elif category.name == 'Forensics' %}
+            {% elif category.slug == 'forensics' %}
               <!-- Forensics Icon -->
               <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m-8 4h8a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2z"></path>
-            {% elif category.name == 'Reverse Engineering' %}
+            {% elif category.slug == 'reverse-engineering' %}
               <!-- Reverse Engineering Icon -->
               <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
               <path d="M21 3l-7 7"></path>
@@ -139,81 +139,62 @@
         </div>
       </div>
 
-      <div class="challenges-grid">
-        {% for challenge in challenges %}
-        <div class="challenge-card {% if challenge.solved %}solved{% endif %}" 
-        data-difficulty="{{ challenge.difficulty }}" 
-        data-status="{% if challenge.solved %}solved{% else %}unsolved{% endif %}"
-        data-id = "{{ challenge.id }}"
-        data-category = "{{ challenge.category.slug }}">
-        {% for cat in category %}
-            {% if cat.id == challenge.categorie_id %}
-        <a href="{% url 'challenge_details' category_name=cat.name challenge_title=challenge.title %}" class="challenge-link"></a>
-        {% endif %}  
-        {% endfor %} 
-        <div class="challenge-card-header">
-            <div class="challenge-difficulty {{ challenge.difficulty }}">
-              {{ challenge.difficulty|title }}
+
+{% for cat in category %}
+        <div class="category-section" data-category="{{ cat.slug }}">
+            <h2 class="category-title">
+                <span class="category-badge {{ cat.slug }}">{{ cat.name }}</span>
+            </h2>
+            
+            <div class="challenges-grid">
+                {% for ch in challenges %}
+                    {% if cat == ch.categorie %}
+                    <div class="challenge-card {% if ch.solved %}solved{% endif %}" 
+                         data-difficulty="{{ ch.difficulty }}" 
+                         data-id="{{ ch.id }}"
+                         data-status="{% if ch.solved %}solved{% else %}unsolved{% endif %}"
+                         data-category="{{ cat.slug }}">
+                        
+                        
+                            <div class="challenge-title">{{ ch.title }}</div>
+                            <div class="challenge-description">{{ ch.description|truncatechars:100 }}</div>
+                            <div class="challenge-meta">
+                                <div class="challenge-difficulty">
+                                    <span class="label">Difficulty:</span>
+                                    <span class="value {{ ch.difficulty }}">{{ ch.difficulty|title }}</span>
+                                </div>
+                                <div class="challenge-points">
+                                    <span class="label">Points:</span>
+                                    <span>{{ ch.points }}</span>
+                                </div>
+                                <div class="challenge-solves">
+                                    <span class="label">Solves:</span>
+                                    <span>{{ ch.solve_set.count }}</span>
+                                </div>
+                            </div>
+                        </a>
+                        
+                        {% if ch.solved %}
+                        <div class="challenge-solved-badge">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            <span>Solved</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if not category_has_challenges %}
+                <div class="no-challenges">
+                    <p>No challenges available in this category yet.</p>
+                </div>
+                {% endif %}
             </div>
-            <div class="challenge-points">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-              </svg>
-              <span>{{ challenge.point_val }} pts</span>
-            </div>
-          </div>   
-          <h3 class="challenge-title">{{ challenge.title }}</h3>
-          
-          <p class="challenge-description">{{ challenge.description }} </p>
-          
-          <div class="challenge-meta">
-            <div class="challenge-solves">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                <circle cx="9" cy="7" r="4"></circle>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-              </svg>
-              <span>{{ challenge.solves }} solves</span>
-            </div>
-            <div class="challenge-date">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                <line x1="16" y1="2" x2="16" y2="6"></line>
-                <line x1="8" y1="2" x2="8" y2="6"></line>
-                <line x1="3" y1="10" x2="21" y2="10"></line>
-              </svg>
-              <span>{{ challenge.created_at|date:"M d, Y" }}</span>
-            </div>
-          </div>
-          {% if challenge.solved %}
-          <div class="challenge-solved-badge">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-              <polyline points="22 4 12 14.01 9 11.01"></polyline>
-            </svg>
-            <span>Solved</span>
-          </div>
-          {% endif %}
         </div>
-        {% empty %}
-        <div class="no-challenges">
-          <div class="no-challenges-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="12" y1="8" x2="12" y2="12"></line>
-              <line x1="12" y1="16" x2="12.01" y2="16"></line>
-            </svg>
-          </div>
-          <h3>No challenges available</h3>
-          <p>Check back soon for new challenges in this category!</p>
-        </div>
-        {% endfor %} 
-        
-      </div>
-     
-    </div>
-  </section>
+        {% endfor %}
 
 
   <!-- Footer -->

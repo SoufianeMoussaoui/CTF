@@ -138,9 +138,9 @@ def challenge_details(request, category_name, challenge_title):
     solvers = CustomeUser.objects.filter(
         solve__challenge=challenge
     ).annotate(
-        solved_at= Max('solve__created_at')
+        solved_at=Max('solve__solved_at')  # Using solved_at instead of created_at
     ).order_by('-solved_at')
-    
+
     # Get total number of solves
     total_solves = challenge.solve_set.count()
     

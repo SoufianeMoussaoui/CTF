@@ -25,7 +25,8 @@ class Challenge(models.Model):
         ('hard', 'Hard'),
         ('expert', 'Expert'),
     ]
-     
+    
+    
     title = models.CharField(max_length=50)
     description = models.TextField()
     flags = models.CharField(max_length=250)
