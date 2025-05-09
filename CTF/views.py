@@ -102,7 +102,7 @@ def category_detail(request, slug):
 
 @login_required(login_url='login')
 def challenge_details(request, category_name, challenge_title):
-    """Render the challenge detail page"""
+
     challenge = get_object_or_404(Challenge, title=challenge_title)
     category = get_object_or_404(Category, name=category_name)
 
@@ -161,65 +161,79 @@ def challenge_details(request, category_name, challenge_title):
 def submit_flag(request, challenge_id):
     challenge = get_object_or_404(Challenge, id=challenge_id)
     submitted_flag = request.POST.get('flag', '').strip()
-    
+    category = Category.objects.get(id = challenge.categorie_id)
+
     # Check if the user has already solved this challenge
     if Solve.objects.filter(user=request.user, challenge=challenge).exists():
         messages.warning(request, 'You have already solved this challenge!')
-        return redirect('challenge_details', category_slug=challenge.category.slug, challenge_slug=challenge.title)
     
     # Check if the flag is correct
     if submitted_flag == challenge.flags:
-        # Create a solve record
         Solve.objects.create(user=request.user, challenge=challenge)
         messages.success(request, 'Congratulations! You solved the challenge!')
+        return redirect('challenges')
     else:
         messages.error(request, 'Incorrect flag. Try again!')
     
-    return redirect('challenge_details', category_slug=challenge.category.slug, challenge_slug=challenge.title)
-
+    return redirect('challenge_details', category.name, challenge.title)
+    
+    
 
 
 @login_required
 @require_POST
-def unlock_hint(request, hint_id):
-    hint = get_object_or_404(Hint, id=hint_id)
-    challenge = hint.challenge
+def unlock_hint(request, hint_id, challenge_id):
+    challenge = get_object_or_404(Challenge, id=challenge_id)
+    hint = get_object_or_404(Hint, id=hint_id) 
+    category = Category.objects.get(id = challenge.categorie_id)
     
-    # Check if the user has already unlocked this hint
     if HintUnlock.objects.filter(user=request.user, hint=hint).exists():
         messages.info(request, 'Hint already unlocked')
-        return redirect('challenge_detail', category_slug=challenge.category.slug, challenge_slug=challenge.slug)
     
-    # Check if the user has enough points to unlock the hint
-    user_points = calculate_user_points(request.user)
+    HintUnlock.objects.create(user=request.user, hint=hint)
+    messages.success(request, f'Hint unlocked')
+        
+    return redirect('challenge_details', category.name, challenge.title)
     
-    if user_points >= hint.cost:
-        # Create a hint unlock record
-        HintUnlock.objects.create(user=request.user, hint=hint)
-        messages.success(request, f'Hint unlocked for {hint.cost} points')
-    else:
-        messages.error(request, f'Not enough points. You need {hint.cost} points to unlock this hint.')
-    
-    return redirect('challenge_details', category_slug=challenge.category.slug, challenge_slug=challenge.slug)
-
-
-def calculate_user_points(user):
-    """Calculate the total points earned by a user from solved challenges"""
-    solved_challenges = Solve.objects.filter(user=user).values_list('challenge_id', flat=True)
-    total_points = Challenge.objects.filter(id__in=solved_challenges).aggregate(
-        total= Sum('points')
-    )['total'] or 0
-    
-    # Subtract points spent on hints
-    unlocked_hints = HintUnlock.objects.filter(user=user).values_list('hint_id', flat=True)
-    spent_points = Hint.objects.filter(id__in=unlocked_hints).aggregate(
-        total= Sum('cost')
-    )['total'] or 0
-    
-    return total_points - spent_points
 
 
 @login_required(login_url='login')
 def leaderboard(request):
-    return render(request, 'leaderboard.html')
+    # Get all users with points, ordered by points (descending)
+    users = CustomeUser.objects.filter(
+        points__gt=0  # Only include users with points
+    ).order_by(
+        '-points'  # Sort by points (descending)
+    )
+    
+    # Create a ranked list
+    ranked_users = []
+    rank = 1
+    prev_points = None
+    
+    for i, user in enumerate(users):
+        # If this user has the same points as the previous user, give them the same rank
+        if prev_points is not None and user.points == prev_points:
+            # Keep the same rank as the previous user
+            pass
+        else:
+            # Otherwise, set rank to the current position
+            rank = i + 1
+        
+        ranked_users.append({
+            'rank': rank,
+            'username': user.username,
+            'points': user.points,
+            # Add any other user fields you want to display
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            # You can add date_joined to show how long they've been active
+            'date_joined': user.date_joined
+        })
+        
+        prev_points = user.points
+    
+    return render(request, 'leaderboard.html', {
+        'ranked_users': ranked_users
+    })
 

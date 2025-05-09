@@ -108,7 +108,7 @@
             <div class="hint-status unlocked">Unlocked</div>
           </div>
           <div class="hint-content active">
-            <p class="hint-text">{{ hint.content }}</p>
+            <p class="hint-text">{{ hint.description }}</p>
           </div>
         </div>
         {% endfor %}
@@ -117,12 +117,11 @@
         <div class="hint-item">
           <div class="hint-header">
             <div class="hint-title">Hint {{ unlocked_hints|length|add:forloop.counter }}</div>
-            <div class="hint-cost">{{ hint.cost }} points</div>
           </div>
           <div class="hint-unlock">
-            <form method="post" action="{% url 'unlock_hint' hint.id %}" class="hint-unlock-form">
+            <form method="post" action="{% url 'unlock_hint' hint.id challenge.id %}" class="hint-unlock-form">
               {% csrf_token %}
-              <button type="submit" class="btn btn-outline">Unlock Hint ({{ hint.cost }} pts)</button>
+              <button type="submit" class="btn btn-outline">unlocked</button>
             </form>
           </div>
         </div>
@@ -142,11 +141,16 @@
         <span>You've already solved this challenge!</span>
       </div>
       {% else %}
-      <form method="post" action="{% url 'submit_flag' challenge.id %}" class="flag-form">
+      <form method="post" action="{% url 'submit_flag' challenge.id  %}" class="flag-form">
         {% csrf_token %}
         <input type="text" name="flag" placeholder="Enter flag (e.g., RS{flag_here})" required>
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
+    </div>
+    {% for message in messages %}
+      <p>{{message}}</p>
+      {% endfor %}
+    </div>
       {% endif %}
     </div>
     

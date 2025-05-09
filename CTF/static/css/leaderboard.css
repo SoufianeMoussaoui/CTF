@@ -1,0 +1,109 @@
+/* Leaderboard Styles */
+.leaderboard-container {
+    background-color: #1e1e2e;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+  }
+  
+  .leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #cdd6f4;
+  }
+  
+  .leaderboard-table th,
+  .leaderboard-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #313244;
+  }
+  
+  .leaderboard-table th {
+    background-color: #181825;
+    color: #cba6f7;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+  }
+  
+  .leaderboard-table tr:hover {
+    background-color: #313244;
+  }
+  
+  .leaderboard-table .rank {
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .leaderboard-table .total-points {
+    font-weight: bold;
+    color: #a6e3a1;
+  }
+  
+  .leaderboard-table .spent-points {
+    color: #f38ba8;
+  }
+  
+  .leaderboard-table .earned-points {
+    color: #89b4fa;
+  }
+  
+  /* Top 3 styling */
+  .top-rank {
+    font-weight: bold;
+  }
+  
+  .rank-1 {
+    background-color: rgba(250, 179, 135, 0.1); /* Gold */
+  }
+  
+  .rank-2 {
+    background-color: rgba(166, 227, 161, 0.1); /* Silver */
+  }
+  
+  .rank-3 {
+    background-color: rgba(137, 180, 250, 0.1); /* Bronze */
+  }
+  
+  .rank-1 .rank {
+    color: #fab387;
+  }
+  
+  .rank-2 .rank {
+    color: #a6e3a1;
+  }
+  
+  .rank-3 .rank {
+    color: #89b4fa;
+  }
+  
+  .empty-leaderboard {
+    text-align: center;
+    padding: 40px 0;
+    color: #cdd6f4;
+    font-style: italic;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .leaderboard-table {
+      font-size: 0.9rem;
+    }
+  
+    .leaderboard-table th,
+    .leaderboard-table td {
+      padding: 8px 10px;
+    }
+  
+    .leaderboard-table th:nth-child(3),
+    .leaderboard-table td:nth-child(3),
+    .leaderboard-table th:nth-child(4),
+    .leaderboard-table td:nth-child(4),
+    .leaderboard-table th:nth-child(5),
+    .leaderboard-table td:nth-child(5) {
+      display: none;
+    }
+  }
+  
