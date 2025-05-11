@@ -16,9 +16,62 @@ def home(request):
     return render(request, 'home.html')
 
 
-def dashboardPage(request):
+@login_required
+def user_dashboard(request):
 
-    return render(request, 'dashboard.html')
+    user = request.user
+
+    users_ranked = CustomeUser.objects.filter(points__gt=0).order_by('-points')
+    user_rank = None
+    
+    for i, ranked_user in enumerate(users_ranked):
+        if ranked_user.id == user.id:
+            user_rank = i + 1
+            break
+    
+    # Get total users with points for percentile calculation
+    total_users_with_points = users_ranked.count()
+    
+    # Calculate percentile if possible
+    percentile = None
+    if user_rank and total_users_with_points > 0:
+        percentile = 100 - (user_rank / total_users_with_points * 100)
+    
+    # Get top 5 users for the leaderboard snippet
+    top_users = []
+    rank = 1
+    prev_points = None
+    
+    for i, top_user in enumerate(users_ranked[:5]):
+        # If this user has the same points as the previous user, give them the same rank
+        if prev_points is not None and top_user.points == prev_points:
+            # Keep the same rank as the previous user
+            pass
+        else:
+            # Otherwise, set rank to the current position
+            rank = i + 1
+        
+        top_users.append({
+            'rank': rank,
+            'username': top_user.username,
+            'points': top_user.points,
+            'is_current_user': top_user.id == user.id
+        })
+        
+        prev_points = top_user.points
+    
+    # Context data for the template
+    context = {
+        'user': user,
+        'user_rank': user_rank,
+        'percentile': percentile,
+        'total_users': CustomeUser.objects.count(),
+        'top_users': top_users,
+        'account_age_days': (user.date_joined.now().date() - user.date_joined.date()).days,
+    }
+    
+    return render(request, 'dashboard.html', context)
+
 
 
 def loginPage(request):
