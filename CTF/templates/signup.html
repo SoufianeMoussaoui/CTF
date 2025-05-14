@@ -126,39 +126,13 @@
             
             <div class="form-group checkbox-group">
               <div class="checkbox">
-                <input type="checkbox" id="terms" name="terms" required>
-                <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
-              </div>
-            </div>
-            
-            <div class="form-group checkbox-group">
-              <div class="checkbox">
                 <input type="checkbox" id="newsletter" name="newsletter">
                 <label for="newsletter">Subscribe to newsletter for challenge updates and cybersecurity tips</label>
               </div>
             </div>
             
-            <button href="{% url 'home' %}" type="submit" class="btn btn-primary btn-block">Create Account</button>
-            
-            <div class="auth-divider">
-              <span>Or sign up with</span>
-            </div>
-            
-            <div class="social-logins">
-              <button type="button" class="btn btn-social btn-github">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-                </svg>
-                <span>GitHub</span>
-              </button>
-              <button type="button" class="btn btn-social btn-google">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"></path>
-                  <path d="M15.5 8.5L12 12m0 0L8.5 15.5M12 12L8.5 8.5M12 12l3.5 3.5"></path>
-                </svg>
-                <span>Google</span>
-              </button>
-            </div>
+            <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+
           </form>
           
           <div class="auth-footer">
@@ -217,78 +191,12 @@
     <div class="container">
       <div class="footer-bottom">
         <p>&copy; {% now "Y" %} CTFPlatform. All rights reserved.</p>
-        <div class="footer-bottom-links">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-          <a href="#">Cookie Policy</a>
-        </div>
       </div>
     </div>
   </footer>
 
-
-    
- <script>
-  function initFormAnimations() {
-  // Add fade in animation to form elements
-  const formGroups = document.querySelectorAll('.form-group');
-  formGroups.forEach((group, index) => {
-    group.style.opacity = '0';
-    group.style.transform = 'translateY(20px)';
-    group.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-    
-    setTimeout(() => {
-      group.style.opacity = '1';
-      group.style.transform = 'translateY(0)';
-    }, 100 + (index * 100));
-  });
-}
-  function initCodeTypingEffect() {
-  const codeLines = document.querySelectorAll('.code-line');
-  const typingDelay = 50; // milliseconds per character
   
-  codeLines.forEach((line, index) => {
-    const text = line.textContent;
-    line.textContent = '';
-    line.style.opacity = '0';
-    
-    // Show lines with a delay
-    setTimeout(() => {
-      line.style.opacity = '1';
-      let charIndex = 0;
-      
-      // Skip typing animation for comment and empty lines
-      if (line.classList.contains('code-comment') || text.trim() === '') {
-        line.textContent = text;
-        return;
-      }
-      
-      // Type out text character by character
-      const typeInterval = setInterval(() => {
-        if (charIndex < text.length) {
-          line.textContent += text.charAt(charIndex);
-          charIndex++;
-        } else {
-          clearInterval(typeInterval);
-        }
-      }, typingDelay);
-    }, index * 300);
-  });
-}
-document.addEventListener('DOMContentLoaded', function() {
-  initFormAnimations();
-  // Only run the code typing effect on non-mobile devices
-  if (window.innerWidth > 767) {
-    setTimeout(initCodeTypingEffect, 500);
-  } else {
-    // For mobile, just show the code without animation
-    document.querySelectorAll('.code-line').forEach(line => {
-      line.style.opacity = '1';
-    });
-  }
-});
- </script> 
-  </script>
+  <script src = "{% static 'js/auth.js ' %}"></script>
   
 </body>
 </html>

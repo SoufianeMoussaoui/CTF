@@ -166,13 +166,6 @@ function showValidationMessage(input, message, isError = true) {
   input.parentNode.insertAdjacentElement('afterend', messageElement);
 }
 
-/**
- * Validate email format
- */
-function validateEmail(email) {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-}
 
 /**
  * Initialize event listeners

@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404,render, redirect
-from .forms import UserReigstration
+from .forms import UserRegistration, UserLogin
 from .models import Category, Challenge, Solve, Hint, HintUnlock, ChallengeFile, CustomeUser
 from django.db.models import Sum, Max
 from django.contrib.auth import authenticate, login, logout
@@ -28,27 +28,21 @@ def user_dashboard(request):
         if ranked_user.id == user.id:
             user_rank = i + 1
             break
-    
-    # Get total users with points for percentile calculation
+
     total_users_with_points = users_ranked.count()
-    
-    # Calculate percentile if possible
+
     percentile = None
     if user_rank and total_users_with_points > 0:
         percentile = 100 - (user_rank / total_users_with_points * 100)
-    
-    # Get top 5 users for the leaderboard snippet
+
     top_users = []
     rank = 1
     prev_points = None
     
     for i, top_user in enumerate(users_ranked[:5]):
-        # If this user has the same points as the previous user, give them the same rank
         if prev_points is not None and top_user.points == prev_points:
-            # Keep the same rank as the previous user
             pass
         else:
-            # Otherwise, set rank to the current position
             rank = i + 1
         
         top_users.append({
@@ -59,8 +53,6 @@ def user_dashboard(request):
         })
         
         prev_points = top_user.points
-    
-    # Context data for the template
     context = {
         'user': user,
         'user_rank': user_rank,
@@ -75,20 +67,20 @@ def user_dashboard(request):
 
 
 def loginPage(request):
-    
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
+        form = UserLogin(request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                form = AuthenticationForm()
+                form = UserLogin()
                 return redirect('home')
-            
+        else:
+            print(form.errors)
     else :
-        form = AuthenticationForm()
+        form = UserLogin()
 
     Context = {'form' : form}
     return render(request, 'login.html', Context)
@@ -102,7 +94,7 @@ def logoutUser(request):
 
 def signup(request):
     if request.method == 'POST':
-        form = UserReigstration(request.POST)
+        form = UserRegistration(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
@@ -110,7 +102,7 @@ def signup(request):
         else:
             print(form.errors)
     else:
-        form = UserReigstration()
+        form = UserRegistration()
    
     Context = {'form' : form}
     return render(request, 'signup.html', Context)
