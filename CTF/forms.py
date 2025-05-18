@@ -42,10 +42,6 @@ class UserRegistration(UserCreationForm):
 
     
 class UserLogin(AuthenticationForm):
-    class Meta : 
-        model = CustomeUser
-        fields = ['username', 'password']
-
     def __init__(self, *args, **kwargs):
         super(UserLogin, self).__init__(*args, **kwargs)
         self.fields['username'].widget.attrs.update({

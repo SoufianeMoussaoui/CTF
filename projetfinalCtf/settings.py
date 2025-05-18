@@ -89,6 +89,8 @@ DATABASES = {
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 # password9090
 
+AUTH_USER_MODEL = 'CTF.CustomeUser'  
+
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.Argon2PasswordHasher',
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
@@ -134,7 +136,7 @@ MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, '')
 
-AUTH_USER_MODEL = 'CTF.CustomeUser'  
+
 
 
 # Default primary key field type

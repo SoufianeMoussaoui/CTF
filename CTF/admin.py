@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import CustomeUser, Challenge, Hint, Submission
-
+from django.contrib.auth.admin import UserAdmin
 # Register the CustomUser model
 class CustomUserAdmin(admin.ModelAdmin):
     list_display = ('username', 'email', 'points', 'is_active', 'is_staff')

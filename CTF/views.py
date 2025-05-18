@@ -9,32 +9,36 @@ from django.views.decorators.http import require_POST
 from django.http import JsonResponse
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
+from django.http import HttpResponse
+from django.urls import reverse
+from .prevent_brf import brute_force_protect
 
 
 def home(request):
-    
     return render(request, 'home.html')
+
+
+def about(request):
+    return render(request, 'about.html')
+
 
 
 @login_required
 def user_dashboard(request):
-
     user = request.user
-
     users_ranked = CustomeUser.objects.filter(points__gt=0).order_by('-points')
     user_rank = None
-    
     for i, ranked_user in enumerate(users_ranked):
         if ranked_user.id == user.id:
             user_rank = i + 1
             break
-
+    
     total_users_with_points = users_ranked.count()
-
     percentile = None
+    
     if user_rank and total_users_with_points > 0:
         percentile = 100 - (user_rank / total_users_with_points * 100)
-
+    
     top_users = []
     rank = 1
     prev_points = None
@@ -50,9 +54,9 @@ def user_dashboard(request):
             'username': top_user.username,
             'points': top_user.points,
             'is_current_user': top_user.id == user.id
-        })
-        
+        })  
         prev_points = top_user.points
+    
     context = {
         'user': user,
         'user_rank': user_rank,
@@ -68,18 +72,16 @@ def user_dashboard(request):
 
 def loginPage(request):
     if request.method == 'POST':
-        form = UserLogin(request.POST)
+        form = UserLogin(request, data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                form = UserLogin()
-                return redirect('home')
+            user = form.get_user()
+            login(request, user)
+            form = UserLogin()
+            url = reverse('home') + '#more-challenge'
+            return redirect(url)
         else:
-            print(form.errors)
-    else :
+            messages.error(request, 'Invalide username or password.')
+    else:
         form = UserLogin()
 
     Context = {'form' : form}
@@ -98,7 +100,8 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('home')
+            url = reverse('home') + '#more-challenge'
+            return redirect(url)
         else:
             print(form.errors)
     else:
@@ -107,10 +110,6 @@ def signup(request):
     Context = {'form' : form}
     return render(request, 'signup.html', Context)
 
-
-def about(request):
-
-    return render(request, 'about.html')
 
 
 
@@ -147,19 +146,14 @@ def category_detail(request, slug):
 
 @login_required(login_url='login')
 def challenge_details(request, category_name, challenge_title):
-
     challenge = get_object_or_404(Challenge, title=challenge_title)
     category = get_object_or_404(Category, name=category_name)
-
-    # Check if the user has solved this challenge
     solved = False
     if request.user.is_authenticated:
         solved = Solve.objects.filter(user=request.user, challenge=challenge).exists()
-    
-    # Get challenge files
+
     files = ChallengeFile.objects.filter(challenge=challenge)
-    
-    # Get unlocked hints for this user
+
     unlocked_hints = []
     locked_hints = []
     
@@ -168,25 +162,21 @@ def challenge_details(request, category_name, challenge_title):
             challenge=challenge,
             hintunlock__user=request.user
         )
-        
-        # Get locked hints (that the user hasn't unlocked yet)
+
         locked_hints = Hint.objects.filter(
             challenge=challenge
         ).exclude(
             id__in=[hint.id for hint in unlocked_hints]
         )
     else:
-        # If user is not authenticated, all hints are locked
         locked_hints = Hint.objects.filter(challenge=challenge)
-    
-    # Get users who solved this challenge, sorted by newest first
+
     solvers = CustomeUser.objects.filter(
         solve__challenge=challenge
     ).annotate(
-        solved_at=Max('solve__solved_at')  # Using solved_at instead of created_at
+        solved_at=Max('solve__solved_at')  
     ).order_by('-solved_at')
 
-    # Get total number of solves
     total_solves = challenge.solve_set.count()
     
     return render(request, 'challenges/challenge_details.html', {
@@ -201,26 +191,32 @@ def challenge_details(request, category_name, challenge_title):
     })
 
 
-@login_required
+
+
+@brute_force_protect # flag-cheking 
 @require_POST
 def submit_flag(request, challenge_id):
     challenge = get_object_or_404(Challenge, id=challenge_id)
     submitted_flag = request.POST.get('flag', '').strip()
     category = Category.objects.get(id = challenge.categorie_id)
 
-    # Check if the user has already solved this challenge
     if Solve.objects.filter(user=request.user, challenge=challenge).exists():
         messages.warning(request, 'You have already solved this challenge!')
-    
-    # Check if the flag is correct
+
     if submitted_flag == challenge.flags:
+        request.user.points += challenge.point_val
+        request.user.save()
         Solve.objects.create(user=request.user, challenge=challenge)
         messages.success(request, 'Congratulations! You solved the challenge!')
-        return redirect('challenges')
-    else:
-        messages.error(request, 'Incorrect flag. Try again!')
+        
     
-    return redirect('challenge_details', category.name, challenge.title)
+    response = redirect(reverse('challenge_details', 
+                                args=[category.name, challenge.title]))
+    messages.error(request, 'Incorrect flag. Try again!')
+    request.session['flag_failed'] = True
+    return response
+    
+
     
     
 
@@ -244,35 +240,26 @@ def unlock_hint(request, hint_id, challenge_id):
 
 @login_required(login_url='login')
 def leaderboard(request):
-    # Get all users with points, ordered by points (descending)
     users = CustomeUser.objects.filter(
-        points__gt=0  # Only include users with points
+        points__gt=0 
     ).order_by(
-        '-points'  # Sort by points (descending)
+        '-points'  
     )
-    
-    # Create a ranked list
     ranked_users = []
     rank = 1
     prev_points = None
     
     for i, user in enumerate(users):
-        # If this user has the same points as the previous user, give them the same rank
         if prev_points is not None and user.points == prev_points:
-            # Keep the same rank as the previous user
             pass
         else:
-            # Otherwise, set rank to the current position
-            rank = i + 1
-        
+            rank = i + 1   
         ranked_users.append({
             'rank': rank,
             'username': user.username,
             'points': user.points,
-            # Add any other user fields you want to display
             'first_name': user.first_name,
             'last_name': user.last_name,
-            # You can add date_joined to show how long they've been active
             'date_joined': user.date_joined
         })
         

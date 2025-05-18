@@ -95,8 +95,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const email = emailInput.value.trim();
         
         if (email) {
-          // Here you would typically send the email to your server
-          // For now, just show a success message
           alert('Thank you for subscribing to our newsletter!');
           emailInput.value = '';
         }

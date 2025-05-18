@@ -143,6 +143,7 @@ a:hover {
   justify-content: space-between;
 }
 
+
 .navbar-brand h1 {
   font-size: 1.5rem;
   font-weight: 800;
@@ -207,6 +208,7 @@ a:hover {
   padding: 6rem 1rem 2rem;
   position: relative;
   overflow: hidden;
+  
 }
 
 .auth-bg {

@@ -86,7 +86,7 @@
   </section>
 
   <!-- Live Challenges Section -->
-  <section class="challenges">
+  <section id="more-challenge" class="challenges" >
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">Live <span>Challenges</span></h2>
@@ -391,6 +391,17 @@
       </div>
     </div>
   </footer>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    if (window.location.hash) {
+      const section = document.querySelector(window.location.hash);
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  });
+</script>
 
   <script src="{% static 'js/home.js' %}"></script>
 </body>
