@@ -31,17 +31,17 @@ class Challenge(models.Model):
     description = models.TextField()
     flags = models.CharField(max_length=250)
     point_val = models.IntegerField(null=True, blank=True)
-    difficulty = models.CharField(max_length=10, choices=DIFFICULTY_CHOICES, default='medium')
-    categorie = models.ForeignKey(Category, related_name='challenges', on_delete=models.CASCADE)
+    difficulty = models.CharField(max_length=10, 
+                                  choices=DIFFICULTY_CHOICES, 
+                                  default='medium')
+    categorie = models.ForeignKey(Category, 
+                                  related_name='challenges', 
+                                  on_delete=models.CASCADE)
 
 
     def __str__(self):
         return self.title
 
-
-    @property
-    def solve_set():
-        pass
     
 
 
@@ -88,7 +88,7 @@ class Submission(models.Model):
     end_time = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = ('user', 'challenge')  # Ensures a user can only submit once per challenge
+        unique_together = ('user', 'challenge') 
 
     def __str__(self):
         return f"{self.user.username} - {self.challenge.title} Submission"
