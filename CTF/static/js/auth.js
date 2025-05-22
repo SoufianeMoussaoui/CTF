@@ -1,5 +1,3 @@
-
-// DOM Elements
 const navbar = document.querySelector('.navbar');
 const navbarToggle = document.querySelector('.navbar-toggle');
 const passwordField = document.getElementById('password1');
@@ -17,46 +15,42 @@ if (navbarToggle) {
   });
 }
 
+
 /**
- * Password strength checker
- * Evaluates password strength based on multiple criteria
+ * Evaluates password strength 
  */
+
 function checkPasswordStrength(password) {
-  if (!password) return 0;
-  
+  if (!password) return 0;  
   let strength = 0;
-  
-  // Length check
+
   if (password.length >= 8) {
     strength += 1;
     document.querySelector('[data-requirement="length"]')?.classList.add('met');
-  } else {
+  } 
+  else 
     document.querySelector('[data-requirement="length"]')?.classList.remove('met');
-  }
-  
-  // Uppercase and lowercase check
+
   if (/[a-z]/.test(password) && /[A-Z]/.test(password)) {
     strength += 1;
     document.querySelector('[data-requirement="uppercase"]')?.classList.add('met');
-  } else {
+  } 
+  else 
     document.querySelector('[data-requirement="uppercase"]')?.classList.remove('met');
-  }
   
-  // Number check
   if (/\d/.test(password)) {
     strength += 1;
     document.querySelector('[data-requirement="number"]')?.classList.add('met');
-  } else {
+  } 
+  else 
     document.querySelector('[data-requirement="number"]')?.classList.remove('met');
-  }
-  
-  // Special character check
+
   if (/[^A-Za-z0-9]/.test(password)) {
     strength += 1;
     document.querySelector('[data-requirement="special"]')?.classList.add('met');
-  } else {
+  } 
+  else 
     document.querySelector('[data-requirement="special"]')?.classList.remove('met');
-  }
   
   return strength;
 }
@@ -68,11 +62,8 @@ function updatePasswordStrength(password) {
   if (!strengthBar || !strengthText) return;
   
   const strength = checkPasswordStrength(password);
-  
-  // Update strength bar
   strengthBar.setAttribute('data-strength', strength);
-  
-  // Update strength text
+
   switch (strength) {
     case 0:
       strengthText.textContent = 'Too weak';
@@ -92,22 +83,22 @@ function updatePasswordStrength(password) {
   }
 }
 
+
 /**
- * Check if passwords match (for signup form)
+ * Check if passwords match (for signup form just for the style)
  */
+
 function checkPasswordsMatch() {
   if (!passwordField || !passwordConfirmField) return;
   
   const password = passwordField.value;
   const passwordConfirm = passwordConfirmField.value;
-  
   if (passwordConfirm.length === 0) return;
   
-  if (password === passwordConfirm) {
-    passwordConfirmField.style.borderColor = 'var(--success)';
-  } else {
+  if (password === passwordConfirm) 
+    passwordConfirmField.style.borderColor = 'var(--success)'; 
+  else 
     passwordConfirmField.style.borderColor = 'var(--danger)';
-  }
 }
 
 /**
@@ -138,9 +129,9 @@ function initCodeTypingEffect() {
         if (charIndex < text.length) {
           line.textContent += text.charAt(charIndex);
           charIndex++;
-        } else {
+        } 
+        else 
           clearInterval(typeInterval);
-        }
       }, typingDelay);
     }, index * 300);
   });
@@ -162,7 +153,6 @@ function showValidationMessage(input, message, isError = true) {
   messageElement.classList.add(isError ? 'error' : 'success');
   messageElement.textContent = message;
   
-  // Insert after the input container
   input.parentNode.insertAdjacentElement('afterend', messageElement);
 }
 
@@ -170,8 +160,8 @@ function showValidationMessage(input, message, isError = true) {
 /**
  * Initialize event listeners
  */
+
 function initEventListeners() {
-  // Password strength meter for signup page
   if (passwordField) {
     passwordField.addEventListener('input', () => {
       updatePasswordStrength(passwordField.value);
@@ -179,9 +169,8 @@ function initEventListeners() {
   }
   
   // Password confirmation matching
-  if (passwordConfirmField) {
+  if (passwordConfirmField)
     passwordConfirmField.addEventListener('input', checkPasswordsMatch);
-  }
   
   // Email validation
   const emailField = document.getElementById('email');
@@ -199,11 +188,10 @@ function initEventListeners() {
   const usernameField = document.getElementById('username');
   if (usernameField) {
     usernameField.addEventListener('blur', () => {
-      if (usernameField.value && usernameField.value.length < 3) {
+      if (usernameField.value && usernameField.value.length < 3)
         showValidationMessage(usernameField, 'Username must be at least 3 characters');
-      } else if (usernameField.value) {
+      else if (usernameField.value) 
         usernameField.parentNode.querySelector('.validation-message')?.remove();
-      }
     });
   }
 }
@@ -211,8 +199,8 @@ function initEventListeners() {
 /**
  * Initialize form animations
  */
+
 function initFormAnimations() {
-  // Add fade in animation to form elements
   const formGroups = document.querySelectorAll('.form-group');
   formGroups.forEach((group, index) => {
     group.style.opacity = '0';
@@ -228,28 +216,20 @@ function initFormAnimations() {
 
 /**
  * Initialize fake login/registration request simulation
- * For demo purposes only - shows loading state
  */
 function initFormSubmission() {
   const authForm = document.querySelector('.auth-form');
   if (!authForm) return;
   
   authForm.addEventListener('submit', function(e) {
-    // Only intercept if we're in demo mode
     if (window.location.href.includes('demo')) {
       e.preventDefault();
-      
-      // Get the submit button
       const submitButton = this.querySelector('button[type="submit"]');
       const originalText = submitButton.textContent;
-      
-      // Show loading state
       submitButton.disabled = true;
       submitButton.innerHTML = '<div class="spinner"></div> Processing...';
       
-      // Simulate processing delay
       setTimeout(() => {
-        // Reset button
         submitButton.disabled = false;
         submitButton.textContent = originalText;
         
@@ -263,8 +243,6 @@ function initFormSubmission() {
           </svg>
           <p>Success! Redirecting you...</p>
         `;
-        
-        // Add the message to the top of the form
         authForm.insertBefore(message, authForm.firstChild);
         
         // Redirect after a short delay
@@ -276,20 +254,21 @@ function initFormSubmission() {
   });
 }
 
+
+
 /**
- * Initialize everything when DOM is ready
+ * Initialize everything 
  */
+
 document.addEventListener('DOMContentLoaded', function() {
   initEventListeners();
   initFormAnimations();
   initFormSubmission();
-  
   // Only run the code typing effect on non-mobile devices
-  if (window.innerWidth > 767) {
+  if (window.innerWidth > 767) 
     setTimeout(initCodeTypingEffect, 500);
-  } else {
-    // For mobile, just show the code without animation
-    document.querySelectorAll('.code-line').forEach(line => {
+  else {
+      document.querySelectorAll('.code-line').forEach(line => {
       line.style.opacity = '1';
     });
   }

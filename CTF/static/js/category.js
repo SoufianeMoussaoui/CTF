@@ -1,17 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Filter functionality
     const difficultyFilter = document.getElementById('difficulty');
     const statusFilter = document.getElementById('status');
     const categoryFilter = document.getElementById('sort');
     const searchInput = document.getElementById('search');
     const challengeCards = document.querySelectorAll('.challenge-card');
     
-    // Apply filters when changed - with null checks
     if (difficultyFilter) difficultyFilter.addEventListener('change', applyFilters);
     if (statusFilter) statusFilter.addEventListener('change', applyFilters);
     if (categoryFilter) categoryFilter.addEventListener('change', applyFilters);
     
-    // Apply filters on search input
     if (searchInput) searchInput.addEventListener('input', applyFilters);
     
     function applyFilters() {
@@ -35,11 +32,10 @@ document.addEventListener('DOMContentLoaded', function() {
             let statusMatch = status === 'all' || cardStatus === status;
             let searchMatch = cardTitle.includes(searchTerm) || cardDescription.includes(searchTerm);
             
-            if (difficultyMatch && statusMatch && categoryMatch && searchMatch) {
+            if (difficultyMatch && statusMatch && categoryMatch && searchMatch) 
                 card.style.display = 'block';
-            } else {
+            else 
                 card.style.display = 'none';
-            }
         });
     }
     
@@ -50,9 +46,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const hintItem = hintHeader.closest('.hint-item');
             if (hintItem) {
                 const hintContent = hintItem.querySelector('.hint-content');
-                if (hintContent) {
+                if (hintContent)
                     hintContent.classList.toggle('active');
-                }
             }
         }
     });

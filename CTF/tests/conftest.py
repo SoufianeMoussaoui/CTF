@@ -11,8 +11,6 @@ from CTF.models import (
 )
 
 
-
-
 @pytest.fixture
 def category():
     return Category.objects.create(

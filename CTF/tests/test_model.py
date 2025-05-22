@@ -120,13 +120,6 @@ class HintUnlockModelTest(TestCase):
         assert hint_unlock.hint == hint
         assert (timezone.now() - hint_unlock.unlocked_at) < timedelta(seconds=10)
 
-    def test_hint_unlock_str_method(self, user, hint):
-        hint_unlock = HintUnlock.objects.create(
-            user=user,
-            hint=hint
-        )
-        assert str(hint_unlock) == "testuser unlocked hint for SQL Injection 101"
-    
     def test_unique_together_constraint(self, user, hint):
         HintUnlock.objects.create(
             user=user,

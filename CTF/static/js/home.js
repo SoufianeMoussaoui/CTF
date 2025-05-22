@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Mobile menu toggle
     const navbarToggle = document.querySelector('.navbar-toggle');
     const navbarMenu = document.querySelector('.navbar-menu');
     const navbarAuth = document.querySelector('.navbar-auth');
@@ -7,51 +6,35 @@ document.addEventListener('DOMContentLoaded', function() {
     if (navbarToggle) {
       navbarToggle.addEventListener('click', function() {
         this.classList.toggle('active');
-        
-        if (navbarMenu) {
-          navbarMenu.classList.toggle('active');
-        }
-        
-        if (navbarAuth) {
-          navbarAuth.classList.toggle('active');
-        }
+        if (navbarMenu) navbarMenu.classList.toggle('active');
+        if (navbarAuth) navbarAuth.classList.toggle('active');
       });
     }
-    
-    // Navbar scroll effect
-    const navbar = document.querySelector('.navbar');
-    
+    const navbar = document.querySelector('.navbar'); 
     if (navbar) {
       window.addEventListener('scroll', function() {
-        if (window.scrollY > 50) {
+        if (window.scrollY > 50) 
           navbar.classList.add('scrolled');
-        } else {
+        else 
           navbar.classList.remove('scrolled');
-        }
+        
       });
     }
-    
-    // Animated typing effect for terminal
+
     const codeLines = document.querySelectorAll('.code-line');
     const codeBody = document.querySelector('.code-body');
-    
     if (codeBody && codeLines.length > 0) {
-      // Hide all lines initially except the cursor
       codeLines.forEach((line, index) => {
         if (!line.classList.contains('code-cursor')) {
           line.style.display = 'none';
         }
       });
-      
-      // Show lines one by one with a typing effect
+
       let currentLine = 0;
-      
       function showNextLine() {
         if (currentLine < codeLines.length - 1) {
           const line = codeLines[currentLine];
           line.style.display = 'block';
-          
-          // If it's a command line, simulate typing
           if (line.querySelector('.code-command')) {
             const command = line.querySelector('.code-command');
             const originalText = command.textContent;
@@ -95,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const email = emailInput.value.trim();
         
         if (email) {
-          alert('Thank you for subscribing to our newsletter!');
+          alert('Thank you for subscribing to our newsletter!'); // just for test
           emailInput.value = '';
         }
       });

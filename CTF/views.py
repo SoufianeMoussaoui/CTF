@@ -39,16 +39,16 @@ def user_dashboard(request):
     if user_rank and total_users_with_points > 0:
         percentile = 100 - (user_rank / total_users_with_points * 100)
     
+    #  Initialisation : 
     top_users = []
     rank = 1
     prev_points = None
     
-    for i, top_user in enumerate(users_ranked[:5]):
+    for i, top_user in enumerate(users_ranked[:5]): # for only the first 5 player 
         if prev_points is not None and top_user.points == prev_points:
-            pass
+            pass # Case when tow user have the same points
         else:
             rank = i + 1
-        
         top_users.append({
             'rank': rank,
             'username': top_user.username,
@@ -210,16 +210,13 @@ def submit_flag(request, challenge_id):
         messages.success(request, 'Congratulations! You solved the challenge!')
         
     
-    response = redirect(reverse('challenge_details', 
-                                args=[category.name, challenge.title]))
+    response = redirect(reverse('challenge_details', args=[category.name, challenge.title]))
     messages.error(request, 'Incorrect flag. Try again!')
     request.session['flag_failed'] = True
     return response
     
 
     
-    
-
 
 @login_required
 @require_POST
