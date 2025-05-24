@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404,render, redirect
 from .forms import UserRegistration, UserLogin
 from .models import Category, Challenge, Solve, Hint, HintUnlock, ChallengeFile, CustomeUser
 from django.db.models import Sum, Max
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import  login, logout
 
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
@@ -11,15 +11,18 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.http import HttpResponse
 from django.urls import reverse
+
 from .prevent_brf import brute_force_protect
 
 
 def home(request):
-    return render(request, 'home.html')
+    context = {}
+    return render(request, 'home.html', context)
 
 
 def about(request):
-    return render(request, 'about.html')
+    context = {}
+    return render(request, 'about.html', context)
 
 
 

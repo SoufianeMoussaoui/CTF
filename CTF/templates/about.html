@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
   <link rel="stylesheet" href="{% static 'css/home.css' %}">
   <link rel="stylesheet" href="{% static 'css/about.css' %}">
+  <script src="{% static 'js/home.js' %}"></script>
 </head>
 <body>
   <!-- Navigation -->
@@ -322,7 +323,6 @@
             <li><a href="{% url 'challenges' %}">Challenges</a></li>
             <li><a href="{% url 'leaderboard' %}">Leaderboard</a></li>
             <li><a href="{% url 'about' %}">About</a></li>
-	    <!-- <li><a href="{}">FAQ</a></li> -->
           </ul>
         </div>
         <div class="footer-links">
@@ -355,6 +355,5 @@
     </div>
   </footer>
 
-  <script src="{% static 'js/home.js' %}"></script>
 </body>
 </html>
