@@ -1,0 +1,234 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ category.name }} Challenges - CTF Platform</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="{% static 'css/home.css' %}">
+  <link rel="stylesheet" href="{% static 'css/category.css' %}">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar-brand">
+        <h1>CTF<span>Platform</span></h1>
+      </div>
+      <div class="navbar-menu">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a href="{% url 'home' %}">Home</a></li>
+          <li class="nav-item active"><a href="{% url 'challenges' %}">Challenges</a></li>
+          <li class="nav-item"><a href="{% url 'leaderboard' %}">Leaderboard</a></li>
+          <li class="nav-item"><a href="{% url 'about' %}">About</a></li>
+        </ul>
+      </div>
+      <div class="navbar-auth">
+        {% if request.user.is_authenticated %}
+          <a href="{% url 'dashboard' %}" class="btn btn-primary">Profile</a>
+          <a href="{% url 'logout' %}" class="btn btn-outline">Logout</a>
+        {% else %}
+          <a href="{% url 'login' %}" class="btn btn-outline">Login</a>
+          <a href="{% url 'signup' %}" class="btn btn-primary">Sign Up</a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  <!-- Category Header -->
+  <section class="category-header">
+    <div class="category-header-bg"></div>
+  </section>
+
+  <!-- Challenges Section -->
+  <section class="challenges-section">
+    <div class="container">
+      <div class="challenges-filters">
+        <div class="filter-group">
+          <label for="difficulty">Difficulty:</label>
+          <select id="difficulty" class="filter-select">
+            <option value="all">All Difficulties</option>
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+            <option value="expert">Expert</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="status">Status:</label>
+          <select id="status" class="filter-select">
+            <option value="all">All Challenges</option>
+            <option value="solved">Solved</option>
+            <option value="unsolved">Unsolved</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="sort">Category</label>
+          <select id="sort" class="filter-select">
+            <option value="all">All Category</option>
+            <option value="cryptography">cryptography</option>
+            <option value="reverse-engineering">Reverse Engineering</option>
+            <option value="web-exploits">Web Exploits</option>
+            <option value="forensics">Forensics</option>
+          </select>
+        </div>
+        <div class="search-group">
+          <input type="text" id="search" placeholder="Search challenges..." class="search-input">
+          <button class="search-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="challenges-grid">
+        {% for challenge in challenges %}
+        <div class="challenge-card {% if challenge.solved %}solved{% endif %}" 
+        data-difficulty="{{ challenge.difficulty }}" 
+        data-status="{% if challenge.solved %}solved{% else %}unsolved{% endif %}"
+        data-id = "{{ challenge.id }}"
+        data-category = "{{ challenge.category.slug }}">
+        {% for cat in category %}
+            {% if cat.id == challenge.categorie_id %}
+        <a href="{% url 'challenge_details' category_name=cat.name challenge_title=challenge.title %}" class="challenge-link"></a>
+        {% endif %}  
+        {% endfor %} 
+        <div class="challenge-card-header">
+            <div class="challenge-difficulty {{ challenge.difficulty }}">
+              {{ challenge.difficulty|title }}
+            </div>
+            <div class="challenge-points">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+              <span>{{ challenge.point_val }} pts</span>
+            </div>
+          </div>   
+          <h3 class="challenge-title">{{ challenge.title }}</h3>
+          
+          <p class="challenge-description">{{ challenge.description }} </p>
+          
+          <div class="challenge-meta">
+            <div class="challenge-solves">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+              <span>{{ challenge.solves }} solves</span>
+            </div>
+            <div class="challenge-date">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <span>{{ challenge.created_at|date:"M d, Y" }}</span>
+            </div>
+          </div>
+          {% if challenge.solved %}
+          <div class="challenge-solved-badge">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <span>Solved</span>
+          </div>
+          {% endif %}
+        </div>
+        {% empty %}
+        <div class="no-challenges">
+          <div class="no-challenges-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+          </div>
+          <h3>No challenges available</h3>
+          <p>Check back soon for new challenges in this category!</p>
+        </div>
+        {% endfor %} 
+        
+      </div>
+     
+    </div>
+  </section>
+
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h2>CTF<span>Platform</span></h2>
+          <p>A modern platform for cybersecurity enthusiasts to practice and improve their hacking skills.</p>
+          <div class="social-links">
+            <a href="#" class="social-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+              </svg>
+            </a>
+            <a href="#" class="social-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+              </svg>
+            </a>
+            <a href="#" class="social-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'challenges' %}">Challenges</a></li>
+            <li><a href="{% url 'leaderboard' %}">Leaderboard</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h3>Categories</h3>
+          <ul>
+            <li><a href="{% url 'category' 'web' %}">Web Exploitation</a></li>
+            <li><a href="{% url 'category' 'crypto' %}">Cryptography</a></li>
+            <li><a href="{% url 'category' 'forensics' %}">Forensics</a></li>
+            <li><a href="{% url 'category' 'reverse' %}">Reverse Engineering</a></li>
+            <li><a href="{% url 'category' 'pwn' %}">Binary Exploitation</a></li>
+          </ul>
+        </div>
+        <div class="footer-newsletter">
+          <h3>Stay Updated</h3>
+          <p>Subscribe to our newsletter for the latest challenges and events.</p>
+          <form class="newsletter-form">
+            <input type="email" placeholder="Your email address" required>
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+          </form>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; {% now "Y" %} CTFPlatform. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{% static 'js/home.js' %}"></script>
+  <script src="{% static 'js/category.js' %}"></script>
+</body>
+</html>

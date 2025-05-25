@@ -1,0 +1,408 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CTF Platform - Home</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar-brand">
+        <h1>CTF<span>Platform</span></h1>
+      </div>
+      <div class="navbar-menu">
+        <ul class="navbar-nav">
+          <li class="nav-item active"><a href="{% url 'home' %}">Home</a></li>
+          <li class="nav-item"><a href="{% url 'challenges' %}">Challenges</a></li>
+          <li class="nav-item"><a href="{% url 'leaderboard' %}">Leaderboard</a></li>
+          <li class="nav-item"><a href="{% url 'about' %}">About</a></li>
+        </ul>
+      </div>
+      <div class="navbar-auth">
+        {% if request.user.is_authenticated %}
+          <a href="{% url 'dashboard' %}" class="btn btn-primary">Profile</a>
+          <a href="{% url 'logout' %}" class="btn btn-outline">Logout</a>
+        {% else %}
+          <a href="{% url 'login' %}" class="btn btn-outline">Login</a>
+          <a href="{% url 'signup' %}" class="btn btn-primary">Sign Up</a>
+        {% endif %}
+      </div>
+      <button class="navbar-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">Test Your <span>Hacking Skills</span></h1>
+        <p class="hero-subtitle">Join our Capture The Flag challenges and compete with hackers worldwide</p>
+        <div class="hero-cta">
+          {% if request.user.is_authenticated %}
+            <a href="{% url 'challenges' %}" class="btn btn-primary btn-lg">Start Hacking</a>
+            <a href="{% url 'dashboard' %}" class="btn btn-outline btn-lg">View Dashboard</a>
+          {% else %}
+            <a href="{% url 'signup' %}" class="btn btn-primary btn-lg">Join Now</a>
+            <a href="{% url 'about' %}" class="btn btn-outline btn-lg">Learn More</a>
+          {% endif %}
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="code-window">
+          <div class="code-header">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <span class="code-title">terminal</span>
+          </div>
+          <div class="code-body">
+            <div class="code-line">$ <span class="code-command">nmap -sV -p- target.ctf</span></div>
+            <div class="code-line">Starting Nmap scan...</div>
+            <div class="code-line">Discovered open port 22/tcp on target.ctf</div>
+            <div class="code-line">Discovered open port 80/tcp on target.ctf</div>
+            <div class="code-line">Discovered open port 443/tcp on target.ctf</div>
+            <div class="code-line">Discovered open port 8080/tcp on target.ctf</div>
+            <div class="code-line">$ <span class="code-command">gobuster dir -u https://target.ctf -w wordlist.txt</span></div>
+            <div class="code-line">Found: /admin (Status: 200)</div>
+            <div class="code-line">Found: /api (Status: 200)</div>
+            <div class="code-line">Found: /secret (Status: 403)</div>
+            <div class="code-line">$ <span class="code-command">cat flag.txt</span></div>
+            <div class="code-line">CTF{y0u_f0und_th3_fl4g}</div>
+            <div class="code-line code-cursor">_</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-bg"></div>
+  </section>
+
+  <!-- Live Challenges Section -->
+  <section id="more-challenge" class="challenges" >
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Live <span>Challenges</span></h2>
+        <p class="section-subtitle">Test your skills with our current challenges</p>
+      </div>
+      <div class="challenges-grid">
+        <div class="challenge-card">
+          <div class="challenge-header">
+            <span class="challenge-category web">Web</span>
+            <span class="challenge-points">250 pts</span>
+          </div>
+          <h3 class="challenge-title">SQL Injection Master</h3>
+          <p class="challenge-description">Exploit SQL injection vulnerabilities to bypass authentication and find the hidden flag.</p>
+          <div class="challenge-footer">
+            <span class="challenge-difficulty">Medium</span>
+            <span class="challenge-solves">12 solves</span>
+          </div>
+        </div>
+        <div class="challenge-card">
+          <div class="challenge-header">
+            <span class="challenge-category crypto">Crypto</span>
+            <span class="challenge-points">500 pts</span>
+          </div>
+          <h3 class="challenge-title">Broken Encryption</h3>
+          <p class="challenge-description">Decrypt the message using a flawed implementation of AES encryption.</p>
+          <div class="challenge-footer">
+            <span class="challenge-difficulty">Hard</span>
+            <span class="challenge-solves">5 solves</span>
+          </div>
+        </div>
+        <div class="challenge-card">
+          <div class="challenge-header">
+            <span class="challenge-category forensics">Forensics</span>
+            <span class="challenge-points">300 pts</span>
+          </div>
+          <h3 class="challenge-title">Memory Dump Analysis</h3>
+          <p class="challenge-description">Analyze a memory dump to find evidence of malware and extract the flag.</p>
+          <div class="challenge-footer">
+            <span class="challenge-difficulty">Medium</span>
+            <span class="challenge-solves">8 solves</span>
+          </div>
+        </div>
+        <div class="challenge-card">
+          <div class="challenge-header">
+            <span class="challenge-category pwn">Pwn</span>
+            <span class="challenge-points">750 pts</span>
+          </div>
+          <h3 class="challenge-title">Buffer Overflow 101</h3>
+          <p class="challenge-description">Exploit a buffer overflow vulnerability to gain shell access and capture the flag.</p>
+          <div class="challenge-footer">
+            <span class="challenge-difficulty">Expert</span>
+            <span class="challenge-solves">2 solves</span>
+          </div>
+        </div>
+      </div>
+      <div class="challenges-cta">
+        <a href="{% url 'challenges' %}" class="btn btn-primary">View All Challenges</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Leaderboard Section -->
+  <section class="leaderboard">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Top <span>Hackers</span></h2>
+        <p class="section-subtitle">Our current leaderboard champions</p>
+      </div>
+      <div class="leaderboard-table-wrapper">
+        <table class="leaderboard-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Player</th>
+              <th>Challenges</th>
+              <th>Points</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for player in top_players %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>
+                  <div class="player-info">
+                    <div class="player-avatar">{{ player.username|slice:":1" }}</div>
+                    <div class="player-name">{{ player.username }}</div>
+                  </div>
+                </td>
+                <td>{{ player.solved_challenges }}</td>
+                <td>{{ player.points }}</td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td>1</td>
+                <td>
+                  <div class="player-info">
+                    <div class="player-avatar">H</div>
+                    <div class="player-name">Hackerman</div>
+                  </div>
+                </td>
+                <td>12</td>
+                <td>3750</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>
+                  <div class="player-info">
+                    <div class="player-avatar">C</div>
+                    <div class="player-name">CyberNinja</div>
+                  </div>
+                </td>
+                <td>10</td>
+                <td>3200</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>
+                  <div class="player-info">
+                    <div class="player-avatar">P</div>
+                    <div class="player-name">Pwn3r</div>
+                  </div>
+                </td>
+                <td>9</td>
+                <td>2800</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>
+                  <div class="player-info">
+                    <div class="player-avatar">B</div>
+                    <div class="player-name">ByteBender</div>
+                  </div>
+                </td>
+                <td>8</td>
+                <td>2450</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>
+                  <div class="player-info">
+                    <div class="player-avatar">S</div>
+                    <div class="player-name">SecurityGuru</div>
+                  </div>
+                </td>
+                <td>7</td>
+                <td>2100</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="leaderboard-cta">
+        <a href="{% url 'leaderboard' %}" class="btn btn-primary">View Full Leaderboard</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Platform <span>Features</span></h2>
+        <p class="section-subtitle">Why our CTF platform stands out</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+          </div>
+          <h3 class="feature-title">Real-World Scenarios</h3>
+          <p class="feature-description">Our challenges simulate real-world security vulnerabilities and attack scenarios.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 8v4l3 3"></path>
+            </svg>
+          </div>
+          <h3 class="feature-title">24/7 Availability</h3>
+          <p class="feature-description">Practice anytime with our always-on infrastructure and challenge environments.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+              <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+              <line x1="6" y1="1" x2="6" y2="4"></line>
+              <line x1="10" y1="1" x2="10" y2="4"></line>
+              <line x1="14" y1="1" x2="14" y2="4"></line>
+            </svg>
+          </div>
+          <h3 class="feature-title">Dynamic Scoring</h3>
+          <p class="feature-description">Points adjust based on challenge difficulty and number of solves.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </div>
+          <h3 class="feature-title">Team Collaboration</h3>
+          <p class="feature-description">Form teams, collaborate on challenges, and share knowledge securely.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container">
+      <div class="cta-content">
+        <h2 class="cta-title">Ready to test your skills?</h2>
+        <p class="cta-subtitle">Join our community of hackers and start solving challenges today.</p>
+        <div class="cta-buttons">
+          {% if user.is_authenticated %}
+            <a href="{% url 'challenges' %}" class="btn btn-primary btn-lg">Start Hacking</a>
+          {% else %}
+            <a href="{% url 'signup' %}" class="btn btn-primary btn-lg">Create Account</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="cta-bg"></div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h2>CTF<span>Platform</span></h2>
+          <p>A modern platform for cybersecurity enthusiasts to practice and improve their hacking skills.</p>
+          <div class="social-links">
+            <a href="https://x.com/CPlatforme" class="social-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+              </svg>
+            </a>
+            <a href="https://github.com/SoufianeMoussaoui" class="social-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+              </svg>
+            </a>
+            <a href="#" class="social-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+            <a href="#" class="social-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                <rect x="2" y="9" width="4" height="12"></rect>
+                <circle cx="4" cy="4" r="2"></circle>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'challenges' %}">Challenges</a></li>
+            <li><a href="{% url 'leaderboard' %}">Leaderboard</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h3>Resources</h3>
+          <ul>
+            <li><a href="#">Getting Started</a></li>
+            <li><a href="#">Tutorials</a></li>
+            <li><a href="#">Documentation</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Community</a></li>
+          </ul>
+        </div>
+        <div class="footer-newsletter">
+          <h3>Stay Updated</h3>
+          <p>Subscribe to our newsletter for the latest challenges and events.</p>
+          <form class="newsletter-form">
+            <input type="email" placeholder="Your email address" required>
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+          </form>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; {% now "Y" %} CTFPlatform. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    if (window.location.hash) {
+      const section = document.querySelector(window.location.hash);
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  });
+</script>
+
+  <script src="{% static 'js/home.js' %}"></script>
+</body>
+</html>

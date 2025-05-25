@@ -1,0 +1,359 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About - CTF Platform</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="{% static 'css/home.css' %}">
+  <link rel="stylesheet" href="{% static 'css/about.css' %}">
+  <script src="{% static 'js/home.js' %}"></script>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar-brand">
+        <h1>CTF<span>Platform</span></h1>
+      </div>
+      <div class="navbar-menu">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a href="{% url 'home' %}">Home</a></li>
+          <li class="nav-item"><a href="{% url 'challenges' %}">Challenges</a></li>
+          <li class="nav-item"><a href="{% url 'leaderboard' %}">Leaderboard</a></li>
+          <li class="nav-item active"><a href="{% url 'about' %}">About</a></li>
+        </ul>
+      </div>
+      <div class="navbar-auth">
+        {% if user.is_authenticated %}
+          <a href="{% url 'dashboard' %}" class="btn btn-primary">Dashboard</a>
+          <a href="{% url 'logout' %}" class="btn btn-outline">Logout</a>
+        {% else %}
+          <a href="{% url 'login' %}" class="btn btn-outline">Login</a>
+          <a href="{% url 'signup' %}" class="btn btn-primary">Sign Up</a>
+        {% endif %}
+      </div>
+      <button class="navbar-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- About Header -->
+  <section class="about-header">
+    <div class="container">
+      <h1 class="about-title">About This <span>Project</span></h1>
+      <p class="about-subtitle">A student's journey into cybersecurity education</p>
+    </div>
+    <div class="about-header-bg"></div>
+  </section>
+
+  <!-- About Content -->
+  <section class="about-content">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-image">
+          <div class="image-container">
+            <div class="terminal">
+              <div class="terminal-header">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+                <span class="terminal-title">student@ctf-platform:~</span>
+              </div>
+              <div class="terminal-body">
+                <div class="line">$ <span class="command">whoami</span></div>
+                <div class="line">cybersecurity_student</div>
+                <div class="line">$ <span class="command">cat motivation.txt</span></div>
+                <div class="line">To share my passion for cybersecurity</div>
+                <div class="line">and create a learning platform for</div>
+                <div class="line">students like me.</div>
+                <div class="line">$ <span class="command">./start_journey.sh</span></div>
+                <div class="line">CTF Platform initialized...</div>
+                <div class="line">Welcome to the community!</div>
+                <div class="line cursor">_</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="about-text">
+          <div class="about-section">
+            <h2>My Story</h2>
+            <p>Hello! I'm a cybersecurity student passionate about ethical hacking, network security, and digital forensics. This CTF (Capture The Flag) platform is my personal project, born from my desire to create a space where fellow students can practice and improve their cybersecurity skills.</p>
+            <p>Throughout my academic journey, I've found that hands-on practice is the most effective way to learn cybersecurity concepts. CTF challenges have been instrumental in developing my own skills, and I wanted to share this learning approach with others.</p>
+          </div>
+          
+          <div class="about-section">
+            <h2>Project Mission</h2>
+            <p>This platform aims to provide an accessible, educational environment for cybersecurity enthusiasts of all levels. Whether you're just starting out or looking to sharpen advanced skills, the challenges here are designed to teach real-world security concepts in an engaging way.</p>
+            <p>My goal is to foster a community of learners who can collaborate, compete, and grow together in the cybersecurity field.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="about-full-width">
+        <div class="about-section">
+          <h2>What is a CTF?</h2>
+          <p>Capture The Flag (CTF) competitions are cybersecurity contests where participants solve security-related challenges to find hidden "flags" – typically strings of text that prove you've solved the challenge. These competitions cover various categories:</p>
+          
+          <div class="ctf-categories">
+            <div class="ctf-category">
+              <div class="category-icon web">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"></path>
+                  <path d="M2 12h20"></path>
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+              </div>
+              <h3>Web Exploitation</h3>
+              <p>Finding and exploiting vulnerabilities in web applications, such as SQL injection, cross-site scripting (XSS), and broken authentication.</p>
+            </div>
+            
+            <div class="ctf-category">
+              <div class="category-icon crypto">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  <line x1="12" y1="15" x2="12" y2="17"></line>
+                </svg>
+              </div>
+              <h3>Cryptography</h3>
+              <p>Deciphering encoded messages, breaking weak encryption, and solving mathematical puzzles related to cryptographic algorithms.</p>
+            </div>
+            
+            <div class="ctf-category">
+              <div class="category-icon forensics">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m-8 4h8a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2z"></path>
+                </svg>
+              </div>
+              <h3>Forensics</h3>
+              <p>Analyzing digital evidence, recovering deleted data, and investigating artifacts to uncover hidden information in files, memory dumps, or network captures.</p>
+            </div>
+            
+            <div class="ctf-category">
+              <div class="category-icon reverse">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                  <path d="M21 3l-7 7"></path>
+                  <path d="M3 21l7-7"></path>
+                </svg>
+              </div>
+              <h3>Reverse Engineering</h3>
+              <p>Disassembling and analyzing compiled programs to understand their functionality, find vulnerabilities, or bypass security measures.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="about-columns">
+        <div class="about-column">
+          <div class="about-section">
+            <h2>Educational Benefits</h2>
+            <ul class="benefits-list">
+              <li>
+                <span class="benefit-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                  </svg>
+                </span>
+                <div class="benefit-text">
+                  <h4>Practical Skills</h4>
+                  <p>Apply theoretical knowledge to real-world scenarios and develop hands-on technical skills.</p>
+                </div>
+              </li>
+              <li>
+                <span class="benefit-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                  </svg>
+                </span>
+                <div class="benefit-text">
+                  <h4>Problem-Solving</h4>
+                  <p>Enhance critical thinking and develop creative approaches to complex security problems.</p>
+                </div>
+              </li>
+              <li>
+                <span class="benefit-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                  </svg>
+                </span>
+                <div class="benefit-text">
+                  <h4>Career Preparation</h4>
+                  <p>Build a portfolio of skills that are directly applicable to cybersecurity careers.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="about-column">
+          <div class="about-section">
+            <h2>Get Involved</h2>
+            <p>This platform is a work in progress, and I welcome contributions and feedback from the community. Here's how you can get involved:</p>
+            <ul class="involvement-list">
+              <li>
+                <span class="involvement-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                  </svg>
+                </span>
+                <p>Join the community and participate in challenges</p>
+              </li>
+              <li>
+                <span class="involvement-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 20h9"></path>
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                  </svg>
+                </span>
+                <p>Suggest new challenges or improvements</p>
+              </li>
+              <li>
+                <span class="involvement-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                  </svg>
+                </span>
+                <p>Contribute to the platform's development on GitHub</p>
+              </li>
+              <li>
+                <span class="involvement-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                  </svg>
+                </span>
+                <p>Share feedback or report issues</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <div class="about-contact">
+        <h2>Contact Me</h2>
+        <p>Have questions, suggestions, or just want to connect? Feel free to reach out!</p>
+        
+        <div class="contact-methods">
+          <a href="mailto:student@example.com" class="contact-method">
+            <span class="contact-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+            </span>
+            <span>Soufiane.Moussaoui@emsi-edu.ma</span>
+          </a>
+          
+          <a href="https://github.com/SoufianeMoussaoui" target="_blank" class="contact-method">
+            <span class="contact-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+              </svg>
+            </span>
+            <span>GitHub</span>
+          </a>
+          
+          <a href="https://x.com/CPlatforme" target="_blank" class="contact-method">
+            <span class="contact-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+              </svg>
+            </span>
+            <span>Twitter</span>
+          </a>
+          
+          <a href="https://linkedin.com/in/yourusername" target="_blank" class="contact-method">
+            <span class="contact-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                <rect x="2" y="9" width="4" height="12"></rect>
+                <circle cx="4" cy="4" r="2"></circle>
+              </svg>
+            </span>
+            <span>LinkedIn</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h2>CTF<span>Platform</span></h2>
+          <p>A modern platform for cybersecurity enthusiasts to practice and improve their hacking skills.</p>
+          <div class="social-links">
+            <a href="#" class="social-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+              </svg>
+            </a>
+            <a href="#" class="social-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+              </svg>
+            </a>
+            <a href="#" class="social-link">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'challenges' %}">Challenges</a></li>
+            <li><a href="{% url 'leaderboard' %}">Leaderboard</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h3>Categories</h3>
+          <ul>
+            <li><a href="#">Web Exploitation</a></li>
+            <li><a href="#">Cryptography</a></li>
+            <li><a href="#">Forensics</a></li>
+            <li><a href="#">Reverse Engineering</a></li>
+            <li><a href="#">Binary Exploitation</a></li>
+          </ul>
+        </div>
+        <div class="footer-newsletter">
+          <h3>Stay Updated</h3>
+          <p>Subscribe to our newsletter for the latest challenges and events.</p>
+          <form class="newsletter-form">
+            <input type="email" placeholder="Your email address" required>
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+          </form>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; {% now "Y" %} CTFPlatform. All rights reserved.</p>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
