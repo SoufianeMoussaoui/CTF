@@ -1,0 +1,29 @@
+Title  : Hidden Message
+
+Difficulty : Easy
+
+Descriptions : Investigators believe steganography may have been used to conceal data
+
+Points : 300pts
+
+Hint 1 : The picture seems pure, but is it though
+Hint 2 : passphrase is pass
+
+Cost Hint 1 : 20pts
+Cost Hint 2 : 0pts
+
+
+Flag : RS{$VFd0ZHcwTTNmakluTVlQaQ$UGnbRQmvLDzmw31O2XEA5w}
+
+
+------ Solutions : 
+
+ use steganography
+	
+	Commande : steghide extract -sf img.jpeg
+	passphrase : pass
+	given a the hidden file containing the flag
+
+
+
+

@@ -1,0 +1,24 @@
+
+Difficulty Level : easy
+
+Description : 
+
+In the realm of cryptography and binary manipulation, not all transformations are as simple as they seem. Your mission is to unravel a hidden message concealed within a binary matrix
+
+
+matrix = [
+    "10101101", "10101100", "10000100", "10111110",
+    "10110011", "10111000", "10111010", "10111101",
+    "10101101", "01111101", "01010000", "01011111",
+    "01011011", "01101100", "11101010", "11001010",
+    "00000100"
+]
+
+HINT : Remember, in binary, inversion is a simple yet powerful operation
+
+Solution : if the you inverted the matrix and convert to text (ASCII/UTF-8)
+	we get the flag : RS{ALGEGRA_PROBLEM}
+
+POINT : 100
+
+

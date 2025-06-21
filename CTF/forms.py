@@ -56,3 +56,10 @@ class UserLogin(AuthenticationForm):
         })
 
 
+class CustomUserProfileForm(forms.ModelForm):
+    class Meta:
+        model = CustomeUser
+        fields = ['profile_image']
+
+
+

@@ -1,0 +1,20 @@
+
+
+Diffuclty : EASY
+
+DESCRIPTION : 
+You have been provided with a binary executable file, flaghunter.exe. The objective of this challenge is to reverse-engineer the binary to find the hidden flag
+Upon running the binary, 
+it doesn’t display any meaningful output or instructions; however, 
+there are suspicious parts of the program that suggest a hidden flag is embedded somewhere 
+inside. You will need to explore the binary, 
+understand how it operates, and extract the flag from it
+
+
+HINT : check for embedded strings using tools like strings on Linux or through a disassembler. Often, flags are hidden in plain sight within the binary
+File : getFlag.exe
+
+SOLUTION : 
+	flag : RS{c2luamFiX2hpZGRlbl9mbGFn}
+
+POINT : 100

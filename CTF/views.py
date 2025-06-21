@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404,render, redirect
-from .forms import UserRegistration, UserLogin
+from .forms import UserRegistration, UserLogin, CustomUserProfileForm
 from .models import Category, Challenge, Solve, Hint, HintUnlock, ChallengeFile, CustomeUser
 from django.db.models import Sum, Max
 from django.contrib.auth import  login, logout
@@ -26,9 +26,25 @@ def about(request):
 
 
 
+
 @login_required
 def user_dashboard(request):
+
     user = request.user
+
+    if request.method == 'POST':
+        form = CustomUserProfileForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+    else:
+        form = CustomUserProfileForm(instance=user)
+
+    if request.user.profile_image:
+        profile_image = request.user.profile_image.url
+    else:
+        profile_image = None
+    
     users_ranked = CustomeUser.objects.filter(points__gt=0).order_by('-points')
     user_rank = None
     for i, ranked_user in enumerate(users_ranked):
@@ -62,11 +78,13 @@ def user_dashboard(request):
     
     context = {
         'user': user,
+        'profile_image': profile_image,
         'user_rank': user_rank,
         'percentile': percentile,
         'total_users': CustomeUser.objects.count(),
         'top_users': top_users,
         'account_age_days': (user.date_joined.now().date() - user.date_joined.date()).days,
+        'form' : form,
     }
     
     return render(request, 'dashboard.html', context)

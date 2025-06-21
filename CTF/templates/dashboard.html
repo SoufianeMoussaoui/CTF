@@ -18,10 +18,14 @@
     <div class="dashboard-sidebar">
         <div class="user-profile">
             <div class="avatar">
-                {% if user.username|first %}
-                    <div class="avatar-placeholder">{{ user.username|first|upper }}</div>
+                {% if user.profile_image %}
+                <img src="{{ user.profile_image.url }}" alt="{{ user.username }}'s profile picture" class="avatar-img" />
                 {% else %}
-                    <div class="avatar-placeholder">U</div>
+                    {% if user.username|first %}
+                        <div class="avatar-placeholder">{{ user.username|first|upper }}</div>
+                    {% else %}
+                        <div class="avatar-placeholder">U</div>  
+                    {% endif %}
                 {% endif %}
             </div>
             <h2>{{ user.username }}</h2>
@@ -30,8 +34,13 @@
                     {{ user.first_name }} {{ user.last_name }}
                 {% endif %}
             </p>
-            <p class="user-email">{{ user.email }}</p>
             
+            <p class="user-email">{{ user.email }}</p>
+            <form method="post" enctype="multipart/form-data", action="">
+                {% csrf_token %}
+                {{ form.profile_image}}
+                
+            </form>
             <div class="user-stats">
                 <div class="stat">
                     <span class="stat-value">{{ user.points }}</span>
@@ -42,6 +51,7 @@
                     <span class="stat-label">Rank</span>
                 </div>
             </div>
+
         </div>
         
         <nav class="dashboard-nav">
