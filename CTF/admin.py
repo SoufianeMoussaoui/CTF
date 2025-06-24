@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomeUser, Challenge, Hint, Submission
+from .models import CustomeUser, Challenge, Hint, Submission, Category, ChallengeFile
 from django.contrib.auth.admin import UserAdmin
 
 
@@ -36,3 +36,5 @@ admin.site.register(CustomeUser, CustomUserAdmin)
 admin.site.register(Challenge, ChallengeAdmin)
 admin.site.register(Hint, HintAdmin)
 admin.site.register(Submission, SubmissionAdmin)
+admin.site.register(Category)
+admin.site.register(ChallengeFile)
