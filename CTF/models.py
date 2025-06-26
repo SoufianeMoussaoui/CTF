@@ -57,6 +57,7 @@ class Hint(models.Model):
 
 
 
+
 class CustomeUser(AbstractUser):
     email = models.EmailField(max_length=100)
     points = models.IntegerField(default=0)
@@ -67,6 +68,16 @@ class CustomeUser(AbstractUser):
         return self.username
 
 
+
+class Notification(models.Model):
+    user = models.ForeignKey(CustomeUser, on_delete=models.CASCADE, related_name='notifications')
+    message = models.TextField()
+    url = models.URLField(blank=True, null=True)
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
 
 
 class Solve(models.Model):

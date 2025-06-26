@@ -33,12 +33,12 @@ def user_dashboard(request):
     user = request.user
 
     if request.method == 'POST':
-        form = CustomUserProfileForm(request.POST, request.FILES, instance=user)
-        if form.is_valid():
-            form.save()
+        p_form = CustomUserProfileForm(request.POST, request.FILES, instance=user)
+        if p_form.is_valid():
+            p_form.save()
             return redirect('dashboard')
     else:
-        form = CustomUserProfileForm(instance=user)
+        p_form = CustomUserProfileForm(instance=user)
 
     if request.user.profile_image:
         profile_image = request.user.profile_image.url
@@ -84,7 +84,7 @@ def user_dashboard(request):
         'total_users': CustomeUser.objects.count(),
         'top_users': top_users,
         'account_age_days': (user.date_joined.now().date() - user.date_joined.date()).days,
-        'form' : form,
+        'p_form' : p_form,
     }
     
     return render(request, 'dashboard.html', context)
