@@ -1,6 +1,7 @@
 /* Dashboard Styles */
 :root {
   --primary-color: #cba6f7;
+  --bg-primary: #0f1116;
   --secondary-color: #89b4fa;
   --success-color: #a6e3a1;
   --danger-color: #f38ba8;
@@ -22,7 +23,7 @@
 
 /* Sidebar */
 .dashboard-sidebar {
-  width: 280px;
+  width: 250px;
   background-color: var(--card-background);
   border-right: 1px solid var(--border-color);
   padding: 20px;
@@ -64,13 +65,13 @@
 }
 
 .user-name {
-  margin: 0 0 5px 0;
+  margin: 0 0 10px 0;
   color: var(--text-muted);
   font-size: 0.9rem;
 }
 
-.user-email {
-  margin: 0 0 15px 0;
+.user-bio {
+  margin: 0 0 20px 0;
   color: var(--text-muted);
   font-size: 0.9rem;
 }

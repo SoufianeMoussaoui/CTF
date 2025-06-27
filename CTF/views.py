@@ -36,7 +36,7 @@ def user_dashboard(request):
         p_form = CustomUserProfileForm(request.POST, request.FILES, instance=user)
         if p_form.is_valid():
             p_form.save()
-            return redirect('dashboard')
+            return redirect('profile')
     else:
         p_form = CustomUserProfileForm(instance=user)
 
@@ -87,8 +87,33 @@ def user_dashboard(request):
         'p_form' : p_form,
     }
     
-    return render(request, 'dashboard.html', context)
+    return render(request, 'profile.html', context)
 
+
+
+def settings(request):
+    user = request.user
+    if request.method == 'POST':
+        us_name = request.POST.get('username')
+        email = request.POST.get('email')
+        display_name = request.POST.get('display_name')
+        bio = request.POST.get('bio')
+
+        if user.username != us_name:
+            user.username = us_name
+        if email and email != user.email:
+            user.email = email
+        if display_name:
+            user.name = display_name
+        if bio:
+            user.bio = bio
+
+
+        user.save()
+        messages.success(request, 'Profile updated successfully.')
+        return redirect('settings')
+
+    return render(request, 'settings.html')
 
 
 def loginPage(request):

@@ -63,6 +63,7 @@ class CustomeUser(AbstractUser):
     points = models.IntegerField(default=0)
     is_active = models.BooleanField(default=True)
     profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
+    bio = models.TextField(blank=True, null=True)
     
     def __str__(self):
         return self.username

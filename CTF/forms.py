@@ -62,4 +62,9 @@ class CustomUserProfileForm(forms.ModelForm):
         fields = ['profile_image']
 
 
+class UpdateUsernameEmailForm(forms.ModelForm):
+    class Meta:
+        model = CustomeUser
+        fields = ['username', 'email']
+
 
