@@ -113,7 +113,7 @@ class Submission(models.Model):
 
 class ChallengeFile(models.Model):
     challenge = models.ForeignKey(Challenge, related_name='files', on_delete=models.CASCADE)
-    file = models.FileField(upload_to='challenge_files/')
+    file = models.FileField(upload_to='challenges/')
     name = models.CharField(max_length=255)
     size = models.IntegerField()  # Size in bytes
     

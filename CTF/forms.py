@@ -65,6 +65,6 @@ class CustomUserProfileForm(forms.ModelForm):
 class UpdateUsernameEmailForm(forms.ModelForm):
     class Meta:
         model = CustomeUser
-        fields = ['username', 'email']
+        fields = ['username', 'email', 'bio']
 
 

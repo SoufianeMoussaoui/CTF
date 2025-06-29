@@ -37,6 +37,7 @@ def user_dashboard(request):
         if p_form.is_valid():
             p_form.save()
             return redirect('profile')
+
     else:
         p_form = CustomUserProfileForm(instance=user)
 
@@ -98,20 +99,30 @@ def settings(request):
         email = request.POST.get('email')
         display_name = request.POST.get('display_name')
         bio = request.POST.get('bio')
+        has_error = False
 
-        if user.username != us_name:
-            user.username = us_name
+        if us_name and us_name != user.username:
+            if CustomeUser.objects.filter(username=us_name).exclude(pk=user.pk).exists():
+                messages.error(request, "This username is already taken.")
+                has_error = True
+            else:
+                user.username = us_name
+
         if email and email != user.email:
-            user.email = email
-        if display_name:
-            user.name = display_name
-        if bio:
-            user.bio = bio
+            if CustomeUser.objects.filter(email=email).exclude(pk=user.pk).exists():
+                messages.error(request, "This email is already taken.")
+                has_error = True
+            else:
+                user.email = email
 
-
-        user.save()
-        messages.success(request, 'Profile updated successfully.')
-        return redirect('settings')
+        if not has_error:
+            if display_name:
+                user.name = display_name
+            if bio:
+                user.bio = bio
+            user.save()
+            messages.success(request, "Profile updated successfully.")
+            return redirect('settings')
 
     return render(request, 'settings.html')
 

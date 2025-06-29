@@ -73,7 +73,13 @@
 
 
     <div class="settings-form-container">
-      <h1 class="settings-header">Settings</h1>
+      <div class="alert 
+    alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} 
+    alert-dismissible fade show" role="alert">
+  {{ message }}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
       <form method="POST" class="settings-form">
         {% csrf_token %}
         <label for="username">Username</label>
