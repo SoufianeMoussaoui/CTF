@@ -1,0 +1,53 @@
+<div class="dashboard-sidebar">
+    <div class="user-profile">
+        <div class="avatar">
+            {% if user.profile_image %}
+            <img src="{{ user.profile_image.url }}" alt="{{ user.username }}'s profile picture" class="avatar-img" />
+            {% else %}
+            {% if user.username|first %}
+            <div class="avatar-placeholder">{{ user.username|first|upper }}</div>
+            {% else %}
+            <div class="avatar-placeholder">U</div>
+            {% endif %}
+            {% endif %}
+        </div>
+        <h2>{{ user.username }}</h2>
+        <p class="user-name">
+            {% if user.first_name or user.last_name %}
+            {{ user.first_name }} {{ user.last_name }}
+            {% endif %}
+        </p>
+
+        <p class="user-bio">{{ user.bio }}</p>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ p_form.profile_image }}
+            <button type="submit">Update</button>
+        </form>
+        <div class="user-stats">
+            <div class="stat">
+                <span class="stat-value">{{ user.points }}</span>
+                <span class="stat-label">Points</span>
+            </div>
+            <div class="stat">
+                <span class="stat-value">{{ user_rank|default:"N/A" }}</span>
+                <span class="stat-label">Rank</span>
+            </div>
+        </div>
+
+    </div>
+
+    <nav class="dashboard-nav">
+        <ul>
+            <li class="active"><a href="{% url 'profile' %}">Profile</a></li>
+            <li><a href="{% url 'settings' %}">Setting</a></li>
+            <li><a href="{% url 'leaderboard' %}">Leaderboard</a></li>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'challenges' %}">Challenges</a></li>
+            {% if user.is_staff %}
+            <li><a href="{% url 'admin:index' %}">Admin</a></li>
+            {% endif %}
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+        </ul>
+    </nav>
+</div>
