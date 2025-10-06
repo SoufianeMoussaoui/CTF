@@ -2,6 +2,9 @@
 
 This repository contains a Django project. Follow the instructions below to set up and run the project locally.
 
+
+![Alt text](images/home.png)
+
 ---
 
 ## 🧰 Prerequisites
